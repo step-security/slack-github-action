@@ -54,4 +54,4 @@ This example uses file data when posting to an incoming webhook.
 [formatting]: https://api.slack.com/reference/surfaces/formatting
 [incoming-webhook]: https://api.slack.com/messaging/webhooks
 [interactivity]: https://api.slack.com/messaging/interactivity
-[setup]: https://github.com/slackapi/slack-github-action?tab=readme-ov-file#technique-3-slack-incoming-webhook
+[setup]: https://github.com/step-security/slack-github-action?tab=readme-ov-file#technique-3-slack-incoming-webhook

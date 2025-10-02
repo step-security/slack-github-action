@@ -36,5 +36,5 @@ This example chains multiple Slack API methods together to help fix bugs fast.
 - [`invite.yml`](./invite.yml): GitHub Actions workflow.
 
 [methods]: https://api.slack.com/methods
-[setup]: https://github.com/slackapi/slack-github-action?tab=readme-ov-file#technique-2-slack-api-method
+[setup]: https://github.com/step-security/slack-github-action?tab=readme-ov-file#technique-2-slack-api-method
 [tokens]: https://api.slack.com/concepts/token-types

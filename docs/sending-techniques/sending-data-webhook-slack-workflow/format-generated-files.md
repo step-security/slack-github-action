@@ -9,23 +9,23 @@ This example uses data from a payload file to [send a message](https://tools.sla
 ### Payload file being sent 
 
 ```js reference
-https://github.com/slackapi/slack-github-action/blob/main/example-workflows/Technique_1_Slack_Workflow_Builder/builds.data.json
+https://github.com/step-security/slack-github-action/blob/main/example-workflows/Technique_1_Slack_Workflow_Builder/builds.data.json
 ```
 
 ### GitHub Actions workflow
 
 ```js reference
-https://github.com/slackapi/slack-github-action/blob/main/example-workflows/Technique_1_Slack_Workflow_Builder/builds.gha.yml
+https://github.com/step-security/slack-github-action/blob/main/example-workflows/Technique_1_Slack_Workflow_Builder/builds.gha.yml
 ```
 
 ### Slack app manifest
 
 ```js reference
-https://github.com/slackapi/slack-github-action/blob/main/example-workflows/Technique_1_Slack_Workflow_Builder/builds.manifest.json
+https://github.com/step-security/slack-github-action/blob/main/example-workflows/Technique_1_Slack_Workflow_Builder/builds.manifest.json
 ```
 
 ### Slack webhook trigger
 
 ```js reference
-https://github.com/slackapi/slack-github-action/blob/main/example-workflows/Technique_1_Slack_Workflow_Builder/builds.trigger.json
+https://github.com/step-security/slack-github-action/blob/main/example-workflows/Technique_1_Slack_Workflow_Builder/builds.trigger.json
 ```

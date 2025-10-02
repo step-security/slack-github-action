@@ -14,17 +14,17 @@ following:
 ### GitHub Actions workflow 
 
 ```js reference
-https://github.com/slackapi/slack-github-action/blob/main/example-workflows/Technique_1_Slack_Workflow_Builder/announcements.gha.yml
+https://github.com/step-security/slack-github-action/blob/main/example-workflows/Technique_1_Slack_Workflow_Builder/announcements.gha.yml
 ```
 
 #### Slack app manifest
 
 ```js reference
-https://github.com/slackapi/slack-github-action/blob/main/example-workflows/Technique_1_Slack_Workflow_Builder/announcements.manifest.json
+https://github.com/step-security/slack-github-action/blob/main/example-workflows/Technique_1_Slack_Workflow_Builder/announcements.manifest.json
 ```
 
 ### Slack webhook trigger
 
 ```js reference
-https://github.com/slackapi/slack-github-action/blob/main/example-workflows/Technique_1_Slack_Workflow_Builder/announcements.trigger.json
+https://github.com/step-security/slack-github-action/blob/main/example-workflows/Technique_1_Slack_Workflow_Builder/announcements.trigger.json
 ```

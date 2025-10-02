@@ -9,17 +9,17 @@ This example uses the default GitHub event [context](https://github.com/actions/
 ### GitHub Actions workflow
 
 ```js reference
-https://github.com/slackapi/slack-github-action/blob/main/example-workflows/Technique_1_Slack_Workflow_Builder/topic.gha.yml
+https://github.com/step-security/slack-github-action/blob/main/example-workflows/Technique_1_Slack_Workflow_Builder/topic.gha.yml
 ```
 
 ### Slack app manifest
 
 ```js reference
-https://github.com/slackapi/slack-github-action/blob/main/example-workflows/Technique_1_Slack_Workflow_Builder/topic.manifest.json
+https://github.com/step-security/slack-github-action/blob/main/example-workflows/Technique_1_Slack_Workflow_Builder/topic.manifest.json
 ```
 
 ### Slack webhook trigger
 
 ```js reference
-https://github.com/slackapi/slack-github-action/blob/main/example-workflows/Technique_1_Slack_Workflow_Builder/topic.trigger.json
+https://github.com/step-security/slack-github-action/blob/main/example-workflows/Technique_1_Slack_Workflow_Builder/topic.trigger.json
 ```

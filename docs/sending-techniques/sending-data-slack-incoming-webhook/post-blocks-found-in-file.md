@@ -9,11 +9,11 @@ This example uses file data when posting to an incoming webhook.
 ### Payload file being sent
 
 ```js reference
-https://github.com/slackapi/slack-github-action/blob/main/example-workflows/Technique_3_Slack_Incoming_Webhook/saved.data.json
+https://github.com/step-security/slack-github-action/blob/main/example-workflows/Technique_3_Slack_Incoming_Webhook/saved.data.json
 ```
 
 ### GitHub Actions workflow
 
 ```js reference
-https://github.com/slackapi/slack-github-action/blob/main/example-workflows/Technique_3_Slack_Incoming_Webhook/saved.gha.yml
+https://github.com/step-security/slack-github-action/blob/main/example-workflows/Technique_3_Slack_Incoming_Webhook/saved.gha.yml
 ```
