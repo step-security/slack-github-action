@@ -1,7 +1,14 @@
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "files": {
-    "includes": ["**", "!**/*.json", "!coverage", "!dist", "!node_modules"],
+    "includes": [
+      "**",
+      "!**/*.json",
+      "!coverage",
+      "!dist",
+      "!node_modules",
+      "!test/content.spec.js"
+    ],
     "ignoreUnknown": true
   },
   "formatter": {
