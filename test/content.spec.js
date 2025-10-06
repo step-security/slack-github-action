@@ -510,7 +510,7 @@ describe("content", () => {
       mocks.fs.readFileSync
         .withArgs(path.resolve("example.json"), "utf-8")
         .returns(`{
-            "message": "What makes ${{ env.TREASURE }} a secret"
+            "message": "What makes $\{\{ env.TREASURE }} a secret"
           }`);
       mocks.core.getBooleanInput.withArgs("payload-templated").returns(true);
       const config = new Config(mocks.core);
