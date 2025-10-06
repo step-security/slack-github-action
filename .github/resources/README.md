@@ -20,7 +20,6 @@ Configurations for the Slack app and workflow, and the GitHub Actions workflow
 are found in the following files:
 
 - Slack app setup: [`.github/resources/.slack/manifest.json`][slacktion]
-- GitHub Actions steps: [`.github/workflows/develop.yml`][develop]
 
 Either the techniques or app setup and workflow steps can be adjusted during
 testing and development. For experimenting with new changes, we recommend using
@@ -87,8 +86,6 @@ Run the workflow to post messages without pushing changes upstream.
 - An installation of [`nektos/act`](https://github.com/nektos/act)
 - A running instance of [Docker](https://www.docker.com)
 
-The saved `develop.yml` workflows use the same `webhook` and `method` examples
-but skip tests that happen during upstream checks:
 
 ```sh
 $ cp .env.example .env  # Create credentials
@@ -114,14 +111,6 @@ $ npm run dev  # Test techniques
 
 ## Configuring different things
 
-### Updating the workflow
-
-The `develop.yml` file contains the workflow used for testing. Updates to these
-steps can be made to test various functionalities and edge cases.
-
-The same applies to test workflows in the `test.yml` file! However, some hope of
-keeping examples in the `README.md` similar to the tests could be neat.
-
 ### Changing secrets
 
 To use `${{ secrets.* }}` in the workflow, add more environment variable values
@@ -135,7 +124,6 @@ of the `.github/resources/.actions/event.json` file.
 Reference: https://docs.github.com/en/webhooks/webhook-events-and-payloads
 
 [cli]: https://api.slack.com/automation/cli/commands
-[develop]: ../workflows/develop.yml
 [manifest]: https://api.slack.com/concepts/manifests
 [secrets]: https://github.com/step-security/slack-github-action/settings/secrets/actions
 [slacktion]: ./.slack/manifest.json
