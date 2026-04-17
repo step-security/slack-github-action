@@ -42,7 +42,7 @@ jobs:
 
       - name: Add or remove the collaborator
         if: ${{ steps.email.outputs.ok }}
-        uses: slackapi/slack-github-action/cli@v3.0.1
+        uses: step-security/slack-github-action/cli@v3
         with:
           command: "collaborators ${{ inputs.add && 'add' || 'remove' }} ${{ inputs.email }} --app ${{ vars.SLACK_APP_ID }}"
           token: ${{ secrets.SLACK_SERVICE_TOKEN }}
