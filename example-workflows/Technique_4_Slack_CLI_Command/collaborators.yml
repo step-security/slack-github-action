@@ -25,7 +25,7 @@ jobs:
 
       - name: Look up the Slack user by email
         id: email
-        uses: slackapi/slack-github-action@v3.0.1
+        uses: step-security/slack-github-action/cli@v3
         with:
           method: users.lookupByEmail # https://docs.slack.dev/reference/methods/users.lookupByEmail/
           token: ${{ secrets.SLACK_BOT_TOKEN }}
@@ -49,7 +49,7 @@ jobs:
 
       - name: Post a confirmation message
         if: ${{ steps.email.outputs.ok }}
-        uses: slackapi/slack-github-action@v3.0.1
+        uses: step-security/slack-github-action/cli@v3
         with:
           errors: true
           method: chat.postMessage # https://docs.slack.dev/reference/methods/chat.postMessage/

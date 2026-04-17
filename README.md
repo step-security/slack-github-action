@@ -2,13 +2,14 @@
 
 > the GitHub Action for sending data to Slack
 
-Comprehensive documentation is available at [tools.slack.dev/slack-github-action](https://tools.slack.dev/slack-github-action).
+Comprehensive documentation is available at [docs.slack.dev/tools/slack-github-action](https://docs.slack.dev/tools/slack-github-action).
 
 Use this GitHub Action to:
 
-- [Send data with a webhook to start a workflow in Workflow Builder](https://tools.slack.dev/slack-github-action/sending-techniques/sending-data-webhook-slack-workflow).
-- [Send data using a Slack API method and a secret token with required scopes](https://tools.slack.dev/slack-github-action/sending-techniques/sending-data-slack-api-method/).
-- [Send data as a message with a Slack incoming webhook URL](https://tools.slack.dev/slack-github-action/sending-techniques/sending-data-slack-incoming-webhook/).
+- [Send data with a webhook to start a workflow in Workflow Builder](https://docs.slack.dev/tools/slack-github-action/sending-techniques/sending-data-webhook-slack-workflow).
+- [Send data using a Slack API method and a secret token with required scopes](https://docs.slack.dev/tools/slack-github-action/sending-techniques/sending-data-slack-api-method/).
+- [Send data as a message with a Slack incoming webhook URL](https://docs.slack.dev/tools/slack-github-action/sending-techniques/sending-data-slack-incoming-webhook/).
+- [Run Slack CLI commands with a service token](https://docs.slack.dev/tools/slack-github-action/sending-techniques/running-slack-cli-commands/).
 
 ## Project details
 

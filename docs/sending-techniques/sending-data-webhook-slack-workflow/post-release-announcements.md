@@ -11,7 +11,7 @@ following:
 
 ## Files
 
-### GitHub Actions workflow 
+### GitHub Actions workflow
 
 ```js reference
 https://github.com/step-security/slack-github-action/blob/main/example-workflows/Technique_1_Slack_Workflow_Builder/announcements.gha.yml
