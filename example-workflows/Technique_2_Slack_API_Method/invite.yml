@@ -13,18 +13,19 @@ jobs:
     steps:
       - name: Create a new Slack channel for communications
         id: conversation
-        uses: step-security/slack-github-action@v2
+        uses: step-security/slack-github-action@v3
         with:
           errors: true
-          method: conversations.create # https://api.slack.com/methods/conversations.create
+          method: conversations.create # https://docs.slack.dev/reference/methods/conversations.create/
           token: ${{ secrets.SLACK_BOT_TOKEN }}
           payload: |
             name: issue-${{ github.event.issue.number }}
 
       - name: Send the issue link into the Slack channel
-        uses: step-security/slack-github-action@v2
+        uses: step-security/slack-github-action@v3
         with:
-          method: chat.postMessage # https://api.slack.com/methods/chat.postMessage
+          errors: true
+          method: chat.postMessage # https://docs.slack.dev/reference/methods/chat.postMessage/
           token: ${{ secrets.SLACK_BOT_TOKEN }}
           payload: |
             channel: ${{ steps.conversation.outputs.channel_id }}
@@ -32,10 +33,10 @@ jobs:
 
       - name: Gather information of those to add
         id: members
-        uses: step-security/slack-github-action@v2
+        uses: step-security/slack-github-action@v3
         with:
           errors: true
-          method: usergroups.users.list # https://api.slack.com/methods/usergroups.users.list
+          method: usergroups.users.list # https://docs.slack.dev/reference/methods/usergroups.users.list/
           token: ${{ secrets.SLACK_BOT_TOKEN }}
           payload: |
             usergroup: ${{ secrets.SLACK_USERGROUP_ID }}
@@ -46,10 +47,10 @@ jobs:
           echo "SLACK_USERGROUP_USER_IDS=$SLACK_USERGROUP_USER_IDS" >> $GITHUB_ENV
 
       - name: Add the usergroup to the channel
-        uses: step-security/slack-github-action@v2
+        uses: step-security/slack-github-action@v3
         with:
           errors: true
-          method: conversations.invite # https://api.slack.com/methods/conversations.invite
+          method: conversations.invite # https://docs.slack.dev/reference/methods/conversations.invite/
           token: ${{ secrets.SLACK_BOT_TOKEN }}
           payload: |
             channel: ${{ steps.conversation.outputs.channel_id }}

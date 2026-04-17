@@ -10,7 +10,7 @@ The `errors` option defaults to `false` so failed requests do not cause the step
 
 ```yaml
 - name: Attempt to call an unknown method
-  uses: step-security/slack-github-action@v2
+  uses: step-security/slack-github-action@v3
   with:
     errors: true
     method: chat.reverse
@@ -29,7 +29,7 @@ The `payload-delimiter` option will flatten the input payload using the provided
 
 ```yaml
 - name: Flatten the default GitHub payload
-  uses: step-security/slack-github-action@v2
+  uses: step-security/slack-github-action@v3
   with:
     payload-delimiter: "_"
     webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -44,7 +44,7 @@ Additional variables provided in the GitHub event [context](https://github.com/a
 
 ```yaml
 - name: Send custom JSON data to Slack workflow
-  uses: step-security/slack-github-action@v2
+  uses: step-security/slack-github-action@v3
   with:
     payload-file-path: "./payload-slack-content.json"
     payload-templated: true
@@ -60,7 +60,7 @@ If you need to use a proxy to connect to Slack, you can use the `proxy` option. 
 
 ```yaml
 - name: Post to a Slack channel via a proxy
-  uses: step-security/slack-github-action@v2
+  uses: step-security/slack-github-action@v3
   with:
     method: chat.postMessage
     proxy: "http://proxy.example.org:8080" # Change this to a custom value
@@ -74,7 +74,7 @@ The `proxy` option can also be provided with the `HTTPS_PROXY` or `https_proxy` 
 
 ## Retrying failed requests
 
-Sometimes outgoing requests fail due to [rate limits](https://docs.slack.dev/apis/web-api/rate-limits) or similar [HTTP responses](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Retry-After) and can be retried later.
+Sometimes outgoing requests fail due to [rate limits](/apis/web-api/rate-limits) or similar [HTTP responses](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Retry-After) and can be retried later.
 
 The `retries` option can be configured to the needs of your workflow with one of these values:
 
@@ -85,7 +85,7 @@ The `retries` option can be configured to the needs of your workflow with one of
 
 ```yaml
 - name: Attempt a burst of requests
-  uses: step-security/slack-github-action@v2
+  uses: step-security/slack-github-action@v3
   with:
     method: chat.postMessage
     retries: RAPID
@@ -95,15 +95,15 @@ The `retries` option can be configured to the needs of your workflow with one of
       text: "status: all things are going good"
 ```
 
-Behind the scenes, [automatic retries](https://tools.slack.dev/node-slack-sdk/web-api/#automatic-retries) are handled with the [`@slack/web-api`](https://tools.slack.dev/node-slack-sdk/web-api) package for Slack API methods, and [`axios-retry`](https://www.npmjs.com/package/axios-retry) when sending with a webhook.
+Behind the scenes, [automatic retries](/tools/node-slack-sdk/web-api/#automatic-retries) are handled with the [`@slack/web-api`](/tools/node-slack-sdk/web-api/) package for Slack API methods, and [`axios-retry`](https://www.npmjs.com/package/axios-retry) when sending with a webhook.
 
 ## Sending to a custom API URL
 
-In certain circumstances, such as testing the sent payload, a [custom API URL](https://tools.slack.dev/node-slack-sdk/web-api/#custom-api-url) can be used to change where `method` requests are sent:
+In certain circumstances, such as testing the sent payload, a [custom API URL](/tools/node-slack-sdk/web-api/#custom-api-url) can be used to change where `method` requests are sent:
 
 ```yaml
 - name: Send to a custom API URL
-  uses: step-security/slack-github-action@v2
+  uses: step-security/slack-github-action@v3
   with:
     api: http://localhost:8080
     method: chat.postMessage

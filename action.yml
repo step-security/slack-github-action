@@ -1,6 +1,6 @@
-name: "Slack: Send to Slack"
+name: "The Slack GitHub Action"
 author: "step-security"
-description: "Send data to Slack to start a Slack workflow in Workflow Builder, call a Slack API method, or post a message into a channel"
+description: "Post a message, call a Web API method, start a Slack workflow, or run a Slack CLI command from GitHub Actions"
 inputs:
   api:
     description: "A custom API URL to send Slack API method requests to."
@@ -16,7 +16,7 @@ inputs:
     description: "Attributes that create the content of the request using JSON or YAML."
     required: false
   payload-delimiter:
-    description: "Field seperator for nested attributes in the input payload."
+    description: "Field separator for nested attributes in the input payload."
     required: false
   payload-file-path:
     description: "Path to a file containing a valid input payload made of JSON or YAML."
@@ -54,5 +54,5 @@ outputs:
   ts:
     description: "The timestamp of a Slack message or event in the response."
 runs:
-  using: "node20"
+  using: "node24"
   main: "dist/index.js"

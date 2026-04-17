@@ -6,7 +6,7 @@ experiments with the [Slack CLI][cli].
 
 ## Overview
 
-This app showcases all three techniques of sending data into Slack and follows
+This app showcases all four techniques of interacting with Slack and follows
 patterns found in the integration tests.
 
 - **Technique 1** Slack Workflow Builder: Use a Slack webhook trigger to start a
@@ -15,11 +15,16 @@ patterns found in the integration tests.
   data provided through the GitHub workflow.
 - **Technique 3** Incoming webhook: Post a message to a Slack channel using an
   incoming webhook.
+- **Technique 4** Slack CLI Command: Install and run Slack CLI commands such as
+  `deploy` or `manifest` using a service token.
 
 Configurations for the Slack app and workflow, and the GitHub Actions workflow
 are found in the following files:
 
 - Slack app setup: [`.github/resources/.slack/manifest.json`][slacktion]
+
+> **Note:** During CLI integration tests, `.github/resources/.slack` is moved to
+> `.slack` at the project root so the Slack CLI can discover the app manifest.
 
 Either the techniques or app setup and workflow steps can be adjusted during
 testing and development. For experimenting with new changes, we recommend using
@@ -75,6 +80,8 @@ tested. Required values include:
   https://hooks.slack.com/services/T0123456789/B0123456789/abcdefghijklmnopqrstuvwxyz
 - `SLACK_WEBHOOK_TRIGGER`:
   https://hooks.slack.com/triggers/T0123456789/00000000000/abcdefghijklmnopqrstuvwxyz
+- `SLACK_SERVICE_TOKEN`: xoxp-service-token-example (secret — for CLI commands)
+- `SLACK_APP_ID`: A0123456789 (variable — used with `--app` flag in CLI deploy)
 
 ### Experimenting for development
 
@@ -95,6 +102,7 @@ export SLACK_BOT_TOKEN=xoxb-01010101-example
 export SLACK_CHANNEL_ID=C0123456789
 export SLACK_INCOMING_WEBHOOK=https://hooks.slack.com/services/T0123456789/B0123456789/abcdefghijklmnopqrstuvwxyz
 export SLACK_WEBHOOK_TRIGGER=https://hooks.slack.com/triggers/T0123456789/00000000000/abcdefghijklmnopqrstuvwxyz
+export SLACK_SERVICE_TOKEN=xoxp-service-token-example
 ```
 
 Environment variables and credentials should be set in the created `.env` file
@@ -123,7 +131,7 @@ of the `.github/resources/.actions/event.json` file.
 
 Reference: https://docs.github.com/en/webhooks/webhook-events-and-payloads
 
-[cli]: https://api.slack.com/automation/cli/commands
-[manifest]: https://api.slack.com/concepts/manifests
+[cli]: https://docs.slack.dev/tools/slack-cli/
+[manifest]: https://docs.slack.dev/app-manifests/
 [secrets]: https://github.com/step-security/slack-github-action/settings/secrets/actions
 [slacktion]: ./.slack/manifest.json

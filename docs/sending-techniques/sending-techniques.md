@@ -4,11 +4,12 @@ sidebar_label: Overview
 
 # Sending techniques
 
-This GitHub Action offers three different techniques to send data to Slack:
+This GitHub Action offers four different techniques to interact with Slack:
 
 * [Send data with a webhook to start a workflow in Workflow Builder](/tools/slack-github-action/sending-techniques/sending-data-webhook-slack-workflow).
 * [Send data using a Slack API method and a secret token with required scopes](/tools/slack-github-action/sending-techniques/sending-data-slack-api-method/).
-* [Send data as a message with a Slack incoming webhook URL](/tools/slack-github-action/sending-techniques/sending-data-slack-incoming-webhook/). 
+* [Send data as a message with a Slack incoming webhook URL](/tools/slack-github-action/sending-techniques/sending-data-slack-incoming-webhook/).
+* [Run Slack CLI commands with a service token](/tools/slack-github-action/sending-techniques/running-slack-cli-commands/running-slack-cli-commands).
 
 ## Expected outputs
 
@@ -20,15 +21,15 @@ The following outputs are returned with each of the techniques:
 |---|---|---|
 |`time` | `number` | The Unix [epoch time](https://en.wikipedia.org/wiki/Unix_time) that the step completed.
 | `ok` | `boolean` | If the request completed with success.
-| `response` | `string` | The [response](https://docs.slack.dev/apis/web-api/#responses) from the request as stringified JSON.
+| `response` | `string` | The [response](/apis/web-api/#responses) from the request as stringified JSON.
 
 While these outputs are returned with certain Slack API methods:
 
 | Output | Type  | Description|
 |---|---|---|
-|`channel_id` | `string` | The [channel ID](https://docs.slack.dev/reference/objects/conversation-object) included in the response.
-| `ts`| `string` | The [timestamp](https://docs.slack.dev/messaging/retrieving-messages#individual_messages) of the Slack event or message.
-| `thread_ts` | `string` | The [timestamp](https://docs.slack.dev/messaging/retrieving-messages#individual_messages) of a parent Slack message with [threaded replies](https://docs.slack.dev/messaging/retrieving-messages#pulling_threads).
+|`channel_id` | `string` | The [channel ID](/reference/objects/conversation-object) included in the response.
+| `ts`| `string` | The [timestamp](/messaging/retrieving-messages#individual_messages) of the Slack event or message.
+| `thread_ts` | `string` | The [timestamp](/messaging/retrieving-messages#individual_messages) of a parent Slack message with [threaded replies](/messaging/retrieving-messages#pulling_threads).
 
 ## Example responses
 
@@ -37,7 +38,7 @@ The following snippet shows how multiple steps can be chained together to create
 ```yaml
 - name: Create a new Slack channel for recent changes
   id: conversation
-  uses: step-security/slack-github-action@v2
+  uses: step-security/slack-github-action@v3
   with:
     method: conversations.create
     token: ${{ secrets.SLACK_BOT_TOKEN }}
@@ -45,7 +46,7 @@ The following snippet shows how multiple steps can be chained together to create
       name: pull-request-review-${{ github.sha }}
 - name: Send the pull request link into the Slack channel
   if: ${{ steps.conversation.outputs.ok }}
-  uses: step-security/slack-github-action@v2
+  uses: step-security/slack-github-action@v3
   with:
     method: chat.postMessage
     token: ${{ secrets.SLACK_BOT_TOKEN }}
