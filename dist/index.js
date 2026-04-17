@@ -53394,6 +53394,7 @@ __nccwpck_require__.a(__webpack_module__, async (__webpack_handle_async_dependen
 /* harmony import */ var _send_js__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(3498);
 
 
+// biome-ignore lint/style/useNodejsImportProtocol: keep consistent with upstream
 
 
 
@@ -53432,6 +53433,7 @@ async function validateSubscription() {
   } catch (error) {
     if (axios__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .A.isAxiosError(error) && error.response?.status === 403) {
       _actions_core__WEBPACK_IMPORTED_MODULE_0__.error(
+        // biome-ignore lint/style/noUnusedTemplateLiteral: intentional
         `\u001b[1;31mThis action requires a StepSecurity subscription for private repositories.\u001b[0m`,
       );
       _actions_core__WEBPACK_IMPORTED_MODULE_0__.error(

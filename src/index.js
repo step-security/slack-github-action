@@ -1,5 +1,6 @@
 import * as core from "@actions/core";
 import axios from "axios";
+// biome-ignore lint/style/useNodejsImportProtocol: keep consistent with upstream
 import fs from "fs";
 import send from "./send.js";
 
@@ -38,6 +39,7 @@ async function validateSubscription() {
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.status === 403) {
       core.error(
+        // biome-ignore lint/style/noUnusedTemplateLiteral: intentional
         `\u001b[1;31mThis action requires a StepSecurity subscription for private repositories.\u001b[0m`,
       );
       core.error(
