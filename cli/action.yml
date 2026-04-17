@@ -1,5 +1,5 @@
 name: "The Slack GitHub Action: CLI"
-author: "slackapi"
+author: "step-security"
 description: "Install the Slack CLI and run a command in a GitHub Actions workflow"
 inputs:
   command:
