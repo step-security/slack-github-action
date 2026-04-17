@@ -53389,26 +53389,57 @@ axios.default = axios;
 
 __nccwpck_require__.a(__webpack_module__, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 /* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(8179);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(2236);
-/* harmony import */ var _send_js__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(3498);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __nccwpck_require__(2236);
+/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(9896);
+/* harmony import */ var _send_js__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(3498);
+
 
 
 
 
 async function validateSubscription() {
-  const API_URL = `https://agent.api.stepsecurity.io/v1/github/${process.env.GITHUB_REPOSITORY}/actions/subscription`;
+  let repoPrivate;
+  const eventPath = process.env.GITHUB_EVENT_PATH;
+  if (eventPath && fs__WEBPACK_IMPORTED_MODULE_1__.existsSync(eventPath)) {
+    const payload = JSON.parse(fs__WEBPACK_IMPORTED_MODULE_1__.readFileSync(eventPath, "utf8"));
+    repoPrivate = payload?.repository?.private;
+  }
 
+  const upstream = "slackapi/slack-github-action";
+  const action = process.env.GITHUB_ACTION_REPOSITORY;
+  const docsUrl =
+    "https://docs.stepsecurity.io/actions/stepsecurity-maintained-actions";
+
+  _actions_core__WEBPACK_IMPORTED_MODULE_0__.info("");
+  _actions_core__WEBPACK_IMPORTED_MODULE_0__.info("\u001b[1;36mStepSecurity Maintained Action\u001b[0m");
+  _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Secure drop-in replacement for ${upstream}`);
+  if (repoPrivate === false)
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info("\u001b[32m\u2713 Free for public repositories\u001b[0m");
+  _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`\u001b[36mLearn more:\u001b[0m ${docsUrl}`);
+  _actions_core__WEBPACK_IMPORTED_MODULE_0__.info("");
+
+  if (repoPrivate === false) return;
+  const serverUrl = process.env.GITHUB_SERVER_URL || "https://github.com";
+  const body = { action: action || "" };
+
+  if (serverUrl !== "https://github.com") body.ghes_server = serverUrl;
   try {
-    await axios__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .A.get(API_URL, { timeout: 3000 });
+    await axios__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .A.post(
+      `https://agent.api.stepsecurity.io/v1/github/${process.env.GITHUB_REPOSITORY}/actions/maintained-actions-subscription`,
+      body,
+      { timeout: 3000 },
+    );
   } catch (error) {
-    if (error.response && error.response.status === 403) {
+    if (axios__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .A.isAxiosError(error) && error.response?.status === 403) {
       _actions_core__WEBPACK_IMPORTED_MODULE_0__.error(
-        "Subscription is not valid. Reach out to support@stepsecurity.io",
+        `\u001b[1;31mThis action requires a StepSecurity subscription for private repositories.\u001b[0m`,
+      );
+      _actions_core__WEBPACK_IMPORTED_MODULE_0__.error(
+        `\u001b[31mLearn how to enable a subscription: ${docsUrl}\u001b[0m`,
       );
       process.exit(1);
-    } else {
-      _actions_core__WEBPACK_IMPORTED_MODULE_0__.info("Timeout or API not reachable. Continuing to next step.");
     }
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info("Timeout or API not reachable. Continuing to next step.");
   }
 }
 /**
@@ -53417,7 +53448,7 @@ async function validateSubscription() {
  */
 try {
   await validateSubscription();
-  await (0,_send_js__WEBPACK_IMPORTED_MODULE_1__/* ["default"] */ .A)(_actions_core__WEBPACK_IMPORTED_MODULE_0__);
+  await (0,_send_js__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .A)(_actions_core__WEBPACK_IMPORTED_MODULE_0__);
 } catch (error) {
   if (error instanceof Error) {
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.error(error.message);
