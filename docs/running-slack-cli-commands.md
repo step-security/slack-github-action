@@ -1,7 +1,3 @@
----
-sidebar_label: Overview
----
-
 # Running Slack CLI commands
 
 The Slack CLI technique installs and runs [Slack CLI](/tools/slack-cli/) commands directly from a GitHub Actions workflow.
@@ -19,7 +15,7 @@ Pass a [service token](/authentication/tokens/) via the `token` input. This is a
 By default, the latest version of the Slack CLI is installed. To pin a specific version, use the `version` input:
 
 ```yaml
-- uses: step-security/slack-github-action/cli@v3
+- uses: step-security/slack-github-action/cli@v3.0.3
   with:
     command: "version"
     version: "3.14.0"
@@ -32,7 +28,7 @@ If the `slack` command already exists on `PATH`, installation is skipped entirel
 Provide a `command` input with the Slack CLI command to run, omitting the `slack` prefix.
 
 ```yaml
-- uses: step-security/slack-github-action/cli@v3
+- uses: step-security/slack-github-action/cli@v3.0.3
   with:
     command: "version"
 ```
@@ -42,7 +38,7 @@ Provide a `command` input with the Slack CLI command to run, omitting the `slack
 When a workflow is re-run with **Enable debug logging**, the action automatically appends `--verbose` to the CLI command. You can also include `--verbose` in your `command` input manually at any time.
 
 ```yaml
-- uses: step-security/slack-github-action/cli@v3
+- uses: step-security/slack-github-action/cli@v3.0.3
   with:
     command: "deploy --app ${{ vars.SLACK_APP_ID }} --verbose"
     token: ${{ secrets.SLACK_SERVICE_TOKEN }}
@@ -64,7 +60,7 @@ The following outputs are available after a CLI command runs:
 
 ```yaml
 steps:
-  - uses: step-security/slack-github-action/cli@v3
+  - uses: step-security/slack-github-action/cli@v3.0.3
     id: slack
     with:
       command: "version"
@@ -76,25 +72,57 @@ steps:
 ```yaml
 steps:
   - uses: actions/checkout@v4
-  - uses: step-security/slack-github-action/cli@v3
+  - uses: step-security/slack-github-action/cli@v3.0.3
     with:
       command: "manifest validate --app ${{ vars.SLACK_APP_ID }}"
       token: ${{ secrets.SLACK_SERVICE_TOKEN }}
 ```
+
+<details>
+<summary><strong>Workflow: Validate a manifest</strong></summary>
+
+This workflow validates the app manifest on pull requests to catch configuration issues early.
+
+```js reference
+https://github.com/step-security/slack-github-action/blob/main/example-workflows/Technique_4_Slack_CLI_Command/manifest.yml
+```
+
+</details>
 
 ### Deploy an app with a service token
 
 ```yaml
 steps:
   - uses: actions/checkout@v4
-  - uses: step-security/slack-github-action/cli@v3
+  - uses: step-security/slack-github-action/cli@v3.0.3
     with:
       command: "deploy --app ${{ vars.SLACK_APP_ID }} --force"
       token: ${{ secrets.SLACK_SERVICE_TOKEN }}
 ```
 
-## Example workflows
+<details>
+<summary><strong>Workflow: Deploy an app</strong></summary>
 
-* [**Deploy an app**](/tools/slack-github-action/sending-techniques/running-slack-cli-commands/deploy-an-app): Deploy to Slack on push to the main branch.
-* [**Validate a manifest**](/tools/slack-github-action/sending-techniques/running-slack-cli-commands/validate-a-manifest): Check the app manifest on pull requests.
-* [**Manage collaborators**](/tools/slack-github-action/sending-techniques/running-slack-cli-commands/manage-collaborators): Add or remove an app collaborator using CLI and API techniques together.
+This workflow deploys a Slack app when changes are pushed to the main branch. It uses a service token to authenticate the deploy command.
+
+```js reference
+https://github.com/step-security/slack-github-action/blob/main/example-workflows/Technique_4_Slack_CLI_Command/deploy.yml
+```
+
+</details>
+
+### Manage collaborators 
+
+<details>
+
+<summary><strong>Workflow: Manage collaborators</strong></summary>
+
+This workflow adds or removes an app collaborator using a manually triggered workflow.
+
+This example combines the Slack API technique ([`users.lookupByEmail`](https://docs.slack.dev/reference/methods/users.lookupByEmail), [`chat.postMessage`](https://docs.slack.dev/reference/methods/chat.postMessage)) with the CLI technique ([`collaborators add`](https://docs.slack.dev/tools/slack-cli/reference/commands/slack_collaborators_add)/[`remove`](https://docs.slack.dev/tools/slack-cli/reference/commands/slack_collaborators_remove)) to look up a user by email, update collaborators, and post a confirmation message.
+
+```js reference
+https://github.com/step-security/slack-github-action/blob/main/example-workflows/Technique_4_Slack_CLI_Command/collaborators.yml
+```
+
+</details>
