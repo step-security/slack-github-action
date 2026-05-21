@@ -16,7 +16,7 @@ jobs:
           persist-credentials: false
 
       - name: Start the Slack workflow
-        uses: step-security/slack-github-action@v2
+        uses: step-security/slack-github-action@v3
         with:
           payload-file-path: "./example-workflows/Technique_1_Slack_Workflow_Builder/builds.data.json"
           webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
