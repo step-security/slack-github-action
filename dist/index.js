@@ -54631,7 +54631,7 @@ __nccwpck_require__.a(__webpack_module__, async (__webpack_handle_async_dependen
 /* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(8179);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __nccwpck_require__(2236);
 /* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(9896);
-/* harmony import */ var _send_js__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(3498);
+/* harmony import */ var _send_js__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(3793);
 
 
 // biome-ignore lint/style/useNodejsImportProtocol: keep consistent with upstream
@@ -54714,7 +54714,7 @@ __webpack_async_result__();
 
 /***/ }),
 
-/***/ 3498:
+/***/ 3793:
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __nccwpck_require__) => {
 
 
@@ -55170,8 +55170,12 @@ function omit(obj, ...keys) {
     return ret;
 }
 //# sourceMappingURL=index.js.map
+// EXTERNAL MODULE: external "node:os"
+var external_node_os_ = __nccwpck_require__(8161);
 // EXTERNAL MODULE: ./node_modules/axios/lib/axios.js + 56 modules
 var axios = __nccwpck_require__(2236);
+;// CONCATENATED MODULE: ./package.json
+const package_namespaceObject = /*#__PURE__*/JSON.parse('{"UU":"slack-github-action","rE":"3.0.3"}');
 // EXTERNAL MODULE: external "node:fs"
 var external_node_fs_ = __nccwpck_require__(3024);
 // EXTERNAL MODULE: external "node:path"
@@ -63775,6 +63779,8 @@ class Logger {
 
 
 
+
+
 /**
  * Options and settings set as inputs to this action.
  *
@@ -63890,11 +63896,27 @@ class Config {
         core.getInput("webhook") || process.env.SLACK_WEBHOOK_URL || null,
       webhookType: core.getInput("webhook-type"),
     };
+    this.instrument();
     this.mask();
     this.validate(core);
     core.debug(`Gathered action inputs: ${JSON.stringify(this.inputs)}`);
     this.content = new Content().get(this);
     core.debug(`Parsed request content: ${JSON.stringify(this.content)}`);
+  }
+
+  /**
+   * Add user agent metadata for instrumentation.
+   */
+  instrument() {
+    this.webapi.addAppMetadata({
+      name: package_namespaceObject.UU,
+      version: package_namespaceObject.rE,
+    });
+    this.axios.defaults.headers.common["User-Agent"] =
+      `${package_namespaceObject.UU.replace("/", ":")}/${package_namespaceObject.rE} ` +
+      `axios/${this.axios.VERSION} ` +
+      `node/${process.version.replace("v", "")} ` +
+      `${external_node_os_.platform()}/${external_node_os_.release()}`;
   }
 
   /**
