@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import * as github from "@actions/github";
 import { flatten } from "flat";
-import yaml from "js-yaml";
+import { JSON_SCHEMA, load } from "js-yaml";
 import markup from "markup-js";
 import Config from "./config.js";
 import SlackError from "./errors.js";
@@ -12,6 +12,12 @@ import SlackError from "./errors.js";
  * of sending a payload.
  */
 export default class Content {
+  /**
+   * Provided inputs as values to be sent from content provided to the action.
+   * @type {any}
+   */
+  values;
+
   /**
    * Gather content from the provided payload or payload file path with parsings.
    * @param {Config} config
@@ -67,8 +73,8 @@ export default class Content {
     }
     try {
       const content = /** @type {Content} */ (
-        yaml.load(config.inputs.payload, {
-          schema: yaml.JSON_SCHEMA,
+        load(config.inputs.payload, {
+          schema: JSON_SCHEMA,
         })
       );
       return /** @type {Content} */ (content);
@@ -125,10 +131,10 @@ export default class Content {
         config.inputs.payloadFilePath.endsWith("yaml") ||
         config.inputs.payloadFilePath.endsWith("yml")
       ) {
-        const load = yaml.load(input, {
-          schema: yaml.JSON_SCHEMA,
+        const content = load(input, {
+          schema: JSON_SCHEMA,
         });
-        return /** @type {Content} */ (load);
+        return /** @type {Content} */ (content);
       }
       if (config.inputs.payloadFilePath.endsWith("json")) {
         return JSON.parse(input);
