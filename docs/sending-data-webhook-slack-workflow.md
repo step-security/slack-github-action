@@ -30,7 +30,7 @@ In the example below, the default GitHub event [context](https://github.com/acti
 
 ```yaml
 - name: Send GitHub Action data to a Slack workflow
-  uses: step-security/slack-github-action@v3
+  uses: step-security/slack-github-action@v4
   with:
     payload-delimiter: "_"
     webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -45,7 +45,7 @@ Provided input values for payload information are sent to the webhook URL after 
 
 ```yaml
 - name: Send custom event details to a Slack workflow
-  uses: step-security/slack-github-action@v3
+  uses: step-security/slack-github-action@v4
   with:
     webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
     webhook-type: webhook-trigger
@@ -60,7 +60,7 @@ Input values for the payload to be sent can also be provided in a file, either i
 
 ```yaml
 - name: Send a saved artifact to a Slack workflow
-  uses: step-security/slack-github-action@v3
+  uses: step-security/slack-github-action@v4
   with:
     payload-file-path: "./artifacts.json"
     webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -75,7 +75,7 @@ The `payload-delimiter` option will flatten the input payload using the provided
 
 ```yaml
 - name: Flatten the default GitHub payload
-  uses: step-security/slack-github-action@v3
+  uses: step-security/slack-github-action@v4
   with:
     payload-delimiter: "_"
     webhook: ${{ secrets.SLACK_WEBHOOK_URL }}

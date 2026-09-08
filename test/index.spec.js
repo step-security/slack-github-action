@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import webapi from "@slack/web-api";
-import axios, { AxiosError } from "axios";
+import webhook from "@slack/webhook";
 import sinon from "sinon";
 
 /**
@@ -20,21 +20,6 @@ import sinon from "sinon";
  */
 export class Mock {
   /**
-   * @typedef Errors - A collection of mocked errors to use in tests.
-   * @prop {Object.<string, AxiosError>} axios - The mocked axios errors.
-   */
-
-  /**
-   * The mocked errors.
-   * @type {Errors}
-   */
-  errors = {
-    axios: {
-      network_failed: new AxiosError("network_failed"),
-    },
-  };
-
-  /**
    * Setup stubbed dependencies and configure default input arguments for all
    * tests.
    *
@@ -42,7 +27,6 @@ export class Mock {
    */
   constructor() {
     this.sandbox = sinon.createSandbox();
-    this.axios = this.sandbox.stub(axios);
     this.calls = this.sandbox.stub(webapi.WebClient.prototype, "apiCall");
     this.core = {
       debug: this.sandbox.stub(),
@@ -56,6 +40,7 @@ export class Mock {
       setSecret: this.sandbox.stub(),
       warning: this.sandbox.stub(),
     };
+    this.fetch = this.sandbox.stub(globalThis, "fetch");
     this.fs = this.sandbox.stub(fs);
     this.webapi = {
       WebClient: function () {
@@ -63,6 +48,10 @@ export class Mock {
           ok: true,
         });
       },
+    };
+    this.webhook = {
+      incoming: this.sandbox.stub(webhook.IncomingWebhook.prototype, "send"),
+      trigger: this.sandbox.stub(webhook.WebhookTrigger.prototype, "send"),
     };
     this.core.getInput.withArgs("errors").returns("false");
     this.core.getInput.withArgs("retries").returns("5");
@@ -73,7 +62,6 @@ export class Mock {
    */
   reset() {
     this.sandbox.reset();
-    this.axios.post.resetHistory();
     this.calls.resetHistory();
     this.core.debug.reset();
     this.core.error.reset();
@@ -85,6 +73,7 @@ export class Mock {
     this.core.setOutput.reset();
     this.core.setSecret.reset();
     this.core.warning.reset();
+    this.fetch.reset();
     this.webapi = {
       WebClient: function () {
         this.apiCall = () => ({
@@ -92,6 +81,8 @@ export class Mock {
         });
       },
     };
+    this.webhook.incoming.resetHistory();
+    this.webhook.trigger.resetHistory();
     this.core.getInput.withArgs("errors").returns("false");
     this.core.getInput.withArgs("retries").returns("5");
     process.env.SLACK_TOKEN = "";
