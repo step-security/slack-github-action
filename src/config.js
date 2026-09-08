@@ -1,6 +1,5 @@
-import os from "node:os";
 import webapi from "@slack/web-api";
-import axios from "axios";
+import webhook from "@slack/webhook";
 import packageJson from "../package.json" with { type: "json" };
 import Content from "./content.js";
 import SlackError from "./errors.js";
@@ -49,7 +48,7 @@ export default class Config {
    * @property {string?} payloadFilePath - Location of a JSON request payload.
    * @property {boolean} payloadTemplated - If templated values are replaced.
    * @property {string?} proxy - An optional proxied connection for requests.
-   * @property {Retries} retries - The retries method to use for failed requests.
+   * @property {string} retries - The retries method to use for failed requests.
    * @property {string?} token - The authentication value used with the Slack API.
    * @property {string?} webhook - A location for posting request payloads.
    * @property {string?} webhookType - Posting method to use with the webhook.
@@ -61,18 +60,13 @@ export default class Config {
   inputs;
 
   /**
-   * @type {import("axios").AxiosStatic} - The axios client.
-   */
-  axios;
-
-  /**
    * @type {Content} - The parsed payload data to send.
    */
   content;
 
   /**
    * Shared utilities specific to the GitHub action workflow.
-   * @type {import("@actions/core")}
+   * @type {typeof import("@actions/core")}
    */
   core;
 
@@ -83,9 +77,14 @@ export default class Config {
   logger;
 
   /**
-   * @type {import("@slack/web-api")} - Slack API client.
+   * @type {typeof import("@slack/web-api")} - Slack API client.
    */
   webapi;
+
+  /**
+   * @type {typeof import("@slack/webhook")} - Slack webhook client.
+   */
+  webhook;
 
   /**
    * Gather values from the job inputs and use defaults or error for the missing
@@ -95,13 +94,13 @@ export default class Config {
    * kept for later use.
    *
    * @constructor
-   * @param {import("@actions/core")} core - GitHub Actions core utilities.
+   * @param {typeof import("@actions/core")} core - GitHub Actions core utilities.
    */
   constructor(core) {
-    this.axios = axios;
     this.core = core;
     this.logger = new Logger(core).logger;
     this.webapi = webapi;
+    this.webhook = webhook;
     this.inputs = {
       api: core.getInput("api"),
       errors: core.getBooleanInput("errors"),
@@ -137,11 +136,10 @@ export default class Config {
       name: packageJson.name,
       version: packageJson.version,
     });
-    this.axios.defaults.headers.common["User-Agent"] =
-      `${packageJson.name.replace("/", ":")}/${packageJson.version} ` +
-      `axios/${this.axios.VERSION} ` +
-      `node/${process.version.replace("v", "")} ` +
-      `${os.platform()}/${os.release()}`;
+    this.webhook.addAppMetadata({
+      name: packageJson.name,
+      version: packageJson.version,
+    });
   }
 
   /**
@@ -160,7 +158,7 @@ export default class Config {
 
   /**
    * Confirm the configurations are correct enough to continue.
-   * @param {import("@actions/core")} core - GitHub Actions core utilities.
+   * @param {typeof import("@actions/core")} core - GitHub Actions core utilities.
    */
   validate(core) {
     switch (this.inputs.retries.trim().toUpperCase()) {
