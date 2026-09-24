@@ -9,12 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           persist-credentials: false
 
       - name: Validate the manifest
-        uses: step-security/slack-github-action/cli@v3
+        uses: step-security/slack-github-action/cli@v4
         with:
           command: "manifest validate --app ${{ vars.SLACK_APP_ID }}"
           token: ${{ secrets.SLACK_SERVICE_TOKEN }}

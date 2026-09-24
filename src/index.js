@@ -27,7 +27,9 @@ async function validateSubscription() {
 
   if (repoPrivate === false) return;
   const serverUrl = process.env.GITHUB_SERVER_URL || "https://github.com";
-  const body = { action: action || "" };
+  const body = /** @type {{ action: string; ghes_server?: string }} */ ({
+    action: action || "",
+  });
 
   if (serverUrl !== "https://github.com") body.ghes_server = serverUrl;
   try {

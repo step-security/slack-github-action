@@ -46,9 +46,9 @@ describe("content", () => {
       } catch (err) {
         if (err instanceof SlackError) {
           assert.ok(
-            err.message.includes(
-              "Invalid input! Just the payload or payload file path is required.",
-            ),
+              err.message.includes(
+                  "Invalid input! Just the payload or payload file path is required.",
+              ),
           );
         } else {
           assert.fail(err);
@@ -67,6 +67,18 @@ describe("content", () => {
       const expected = {
         message: "this is wrapped",
         channel: "C0123456789",
+      };
+      assert.deepEqual(config.content.values, expected);
+    });
+
+    it("parses multiline YAML from the input payload", async () => {
+      mocks.core.getInput
+          .withArgs("payload")
+          .returns('channel: C0123456789\ntext: "first line\n\n  second line"');
+      const config = new Config(mocks.core);
+      const expected = {
+        channel: "C0123456789",
+        text: "first line\nsecond line",
       };
       assert.deepEqual(config.content.values, expected);
     });
@@ -205,12 +217,14 @@ describe("content", () => {
       assert.deepEqual(config.content.values, expected);
     });
 
-    
+    /**
+     * @see {@link https://github.com/slackapi/slack-github-action/issues/203}
+     */
     it("templatizes variables with missing variables", async () => {
       // biome-ignore-start lint/suspicious/noTemplateCurlyInString: GitHub Action YAML variable syntax
       mocks.core.getInput
-        .withArgs("payload")
-        .returns("message: What makes ${{ env.TREASURE }} a secret");
+          .withArgs("payload")
+          .returns("message: What makes ${{ env.TREASURE }} a secret");
       // biome-ignore-end lint/suspicious/noTemplateCurlyInString: https://docs.github.com/en/actions/how-tos/writing-workflows/choosing-what-your-workflow-does/store-information-in-variables#using-contexts-to-access-variable-values
       mocks.core.getBooleanInput.withArgs("payload-templated").returns(true);
       const config = new Config(mocks.core);
@@ -278,9 +292,9 @@ describe("content", () => {
       } catch (err) {
         if (err instanceof SlackError) {
           assert.ok(
-            err.message.includes(
-              "Invalid input! No payload content was provided",
-            ),
+              err.message.includes(
+                  "Invalid input! No payload content was provided",
+              ),
           );
         } else {
           assert.fail(err);
@@ -296,9 +310,9 @@ describe("content", () => {
       } catch (err) {
         if (err instanceof SlackError) {
           assert.ok(
-            err.message.includes(
-              "Invalid input! Failed to parse contents of the provided payload",
-            ),
+              err.message.includes(
+                  "Invalid input! Failed to parse contents of the provided payload",
+              ),
           );
           assert.notStrictEqual(err.cause?.values, undefined);
           assert.equal(err.cause.values.length, 2);
@@ -316,8 +330,8 @@ describe("content", () => {
     it("parses complete YAML from the input payload file", async () => {
       mocks.core.getInput.withArgs("payload-file-path").returns("example.yaml");
       mocks.fs.readFileSync
-        .withArgs(path.resolve("example.yaml"), "utf-8")
-        .returns(`
+          .withArgs(path.resolve("example.yaml"), "utf-8")
+          .returns(`
             message: "drink water"
             channel: "C6H12O6H2O2"
           `);
@@ -332,8 +346,8 @@ describe("content", () => {
     it("parses complete YML from the input payload file", async () => {
       mocks.core.getInput.withArgs("payload-file-path").returns("example.yml");
       mocks.fs.readFileSync
-        .withArgs(path.resolve("example.yml"), "utf-8")
-        .returns(`
+          .withArgs(path.resolve("example.yml"), "utf-8")
+          .returns(`
             message: "drink coffee"
             channel: "C0FFEEEEEEEE"
           `);
@@ -348,8 +362,8 @@ describe("content", () => {
     it("parses complete JSON from the input payload file", async () => {
       mocks.core.getInput.withArgs("payload-file-path").returns("example.json");
       mocks.fs.readFileSync
-        .withArgs(path.resolve("example.json"), "utf-8")
-        .returns(`{
+          .withArgs(path.resolve("example.json"), "utf-8")
+          .returns(`{
             "message": "drink water",
             "channel": "C6H12O6H2O2"
           }`);
@@ -364,8 +378,8 @@ describe("content", () => {
     it("templatizes variables requires configuration", async () => {
       mocks.core.getInput.withArgs("payload-file-path").returns("example.json");
       mocks.fs.readFileSync
-        .withArgs(path.resolve("example.json"), "utf-8")
-        .returns(`{
+          .withArgs(path.resolve("example.json"), "utf-8")
+          .returns(`{
           "message": "this matches an existing variable: \${{ github.apiUrl }}",
           "channel": "C0123456789"
         }
@@ -383,8 +397,8 @@ describe("content", () => {
     it("templatizes variables with matching variables", async () => {
       mocks.core.getInput.withArgs("payload-file-path").returns("example.json");
       mocks.fs.readFileSync
-        .withArgs(path.resolve("example.json"), "utf-8")
-        .returns(`{
+          .withArgs(path.resolve("example.json"), "utf-8")
+          .returns(`{
             "channel": "C0123456789",
             "reply_broadcast": false,
             "message": "Served \${{ env.NUMBER }} items",
@@ -508,11 +522,14 @@ describe("content", () => {
       assert.deepEqual(config.content.values, expected);
     });
 
+    /**
+     * @see {@link https://github.com/slackapi/slack-github-action/issues/203}
+     */
     it("templatizes variables with missing variables", async () => {
       mocks.core.getInput.withArgs("payload-file-path").returns("example.json");
       mocks.fs.readFileSync
-        .withArgs(path.resolve("example.json"), "utf-8")
-        .returns(`{
+          .withArgs(path.resolve("example.json"), "utf-8")
+          .returns(`{
             "message": "What makes $\{{ env.TREASURE }} a secret"
           }`);
       mocks.core.getBooleanInput.withArgs("payload-templated").returns(true);
@@ -539,7 +556,7 @@ describe("content", () => {
       } catch (err) {
         if (err instanceof SlackError) {
           assert.ok(
-            err.message.includes("Invalid input! No payload found for content"),
+              err.message.includes("Invalid input! No payload found for content"),
           );
         } else {
           assert.fail(err);
@@ -555,9 +572,9 @@ describe("content", () => {
       } catch (err) {
         if (err instanceof SlackError) {
           assert.ok(
-            err.message.includes(
-              "Invalid input! Failed to parse contents of the provided payload file",
-            ),
+              err.message.includes(
+                  "Invalid input! Failed to parse contents of the provided payload file",
+              ),
           );
         } else {
           assert.fail(err);
@@ -573,16 +590,16 @@ describe("content", () => {
       } catch (err) {
         if (err instanceof SlackError) {
           assert.ok(
-            err.message.includes(
-              "Invalid input! Failed to parse contents of the provided payload file",
-            ),
+              err.message.includes(
+                  "Invalid input! Failed to parse contents of the provided payload file",
+              ),
           );
           assert.notStrictEqual(err.cause?.values, undefined);
           assert.equal(err.cause.values.length, 1);
           assert.ok(
-            err.cause.values[0].message.includes(
-              "Invalid input! Failed to parse file extension unknown.md",
-            ),
+              err.cause.values[0].message.includes(
+                  "Invalid input! Failed to parse file extension unknown.md",
+              ),
           );
         } else {
           assert.fail(err);
@@ -593,8 +610,8 @@ describe("content", () => {
     it("fails if invalid JSON exists in the input payload", async () => {
       mocks.core.getInput.withArgs("payload-file-path").returns("example.json");
       mocks.fs.readFileSync
-        .withArgs(path.resolve("example.json"), "utf-8")
-        .returns(`{
+          .withArgs(path.resolve("example.json"), "utf-8")
+          .returns(`{
             "message": "a truncated file without an end`);
       try {
         await send(mocks.core);
@@ -602,9 +619,9 @@ describe("content", () => {
       } catch (err) {
         if (err instanceof SlackError) {
           assert.ok(
-            err.message.includes(
-              "Invalid input! Failed to parse contents of the provided payload file",
-            ),
+              err.message.includes(
+                  "Invalid input! Failed to parse contents of the provided payload file",
+              ),
           );
           assert.notStrictEqual(err.cause?.values, undefined);
           assert.equal(err.cause.values.length, 1);
@@ -618,17 +635,17 @@ describe("content", () => {
     it("fails if invalid YAML exists in the input payload", async () => {
       mocks.core.getInput.withArgs("payload-file-path").returns("example.yaml");
       mocks.fs.readFileSync
-        .withArgs(path.resolve("example.yaml"), "utf-8")
-        .returns(`- "message": "assigned": "values"`);
+          .withArgs(path.resolve("example.yaml"), "utf-8")
+          .returns(`- "message": "assigned": "values"`);
       try {
         await send(mocks.core);
         assert.fail("Failed to throw for invalid YAML");
       } catch (err) {
         if (err instanceof SlackError) {
           assert.ok(
-            err.message.includes(
-              "Invalid input! Failed to parse contents of the provided payload file",
-            ),
+              err.message.includes(
+                  "Invalid input! Failed to parse contents of the provided payload file",
+              ),
           );
           assert.notStrictEqual(err.cause?.values, undefined);
           assert.equal(err.cause.values.length, 1);
